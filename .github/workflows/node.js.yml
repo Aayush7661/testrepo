@@ -19,25 +19,25 @@ jobs:
     - name: Login to Docker Hub
       uses: docker/login-action@v3
       with:
-        username: MyDev
-        password: 12345ser
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build and Push Docker Image
       uses: docker/build-push-action@v5
       with:
         context: .
         push: true
-        tags: MyDev/demoPro:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/demoproject:latest
 
     - name: Deploy to EC2 Server
-      uses: appleboy/ssh-action@v1
+      uses: appleboy/ssh-action@v0.1.10
       with:
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
-          docker pull MyDev/demoPro:latest
+          docker pull ${{ secrets.DOCKER_USERNAME }}/demoproject:latest
           docker stop demoPro || true
           docker rm demoPro || true
-          docker run -d --name demoPro -p 3000:3000 MyDev/demoPro:latest
+          docker run -d --name demoPro -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/demoproject:latest
           docker exec demoPro pm2 list
