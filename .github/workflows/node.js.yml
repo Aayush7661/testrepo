@@ -47,4 +47,4 @@ jobs:
           docker pull ${{ secrets.DOCKER_USERNAME }}/demoproject:latest
           
           # Naya container run karo
-          docker run -d --name demoproject -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/demoproject:latest
+          docker run -d --name demoproject -p 5000:5000 ${{ secrets.DOCKER_USERNAME }}/demoproject:latest
