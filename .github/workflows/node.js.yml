@@ -13,9 +13,6 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Debug Repository Files
-      run: ls -R  # ✅ Check if Dockerfile exists
-
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
@@ -28,10 +25,9 @@ jobs:
     - name: Build and Push Docker Image
       uses: docker/build-push-action@v5
       with:
-        context: .  # ✅ Ensure correct Dockerfile path
-        file: ./Dockerfile
+        context: .
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/demoproject:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/demoPro:latest
 
     - name: Deploy to EC2 Server
       uses: appleboy/ssh-action@v0.1.10
@@ -40,8 +36,7 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/demoproject:latest
+          docker pull ${{ secrets.DOCKER_USERNAME }}/demoPro:latest
           docker stop demoPro || true
           docker rm demoPro || true
-          docker run -d --name demoPro -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/demoproject:latest
-          docker exec demoPro pm2 list
+          docker run -d --name demoPro -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/demoPro:latest
