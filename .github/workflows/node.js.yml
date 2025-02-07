@@ -36,7 +36,15 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/demoproject:latest
+          # Purana container stop aur remove karo
           docker stop demoproject || true
           docker rm demoproject || true
+          
+          # Purani unused images delete karo
+          docker image prune -af
+          
+          # Naya image pull karo
+          docker pull ${{ secrets.DOCKER_USERNAME }}/demoproject:latest
+          
+          # Naya container run karo
           docker run -d --name demoproject -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/demoproject:latest
