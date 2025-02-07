@@ -27,7 +27,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/demoPro:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/demoproject:latest
 
     - name: Deploy to EC2 Server
       uses: appleboy/ssh-action@v0.1.10
@@ -36,7 +36,7 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/demoPro:latest
-          docker stop demoPro || true
-          docker rm demoPro || true
-          docker run -d --name demoPro -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/demoPro:latest
+          docker pull ${{ secrets.DOCKER_USERNAME }}/demoproject:latest
+          docker stop demoproject || true
+          docker rm demoproject || true
+          docker run -d --name demoproject -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/demoproject:latest
