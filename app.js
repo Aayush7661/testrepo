@@ -7,7 +7,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  return res.json({ status: true, message: "Server is running" });
+  return res.json({ status: true, message: "Update code uploade" });
 });
 
 app.listen(5000, () => {
